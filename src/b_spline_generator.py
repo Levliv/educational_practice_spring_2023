@@ -5,9 +5,7 @@ class Spline:
         self.coefficients = coefficients  # Коэффициенты сплайна
         horizontal_knots.sort()
         self.left_border = horizontal_knots[0]  # Левая граница сетки сплайна
-        self.right_border = horizontal_knots[
-            self.segments_number + 1
-        ]  # Правая граница сетки сплайна
+        self.right_border = horizontal_knots[self.segments_number + 1]  # Правая граница сетки сплайна
         self.enlarged_knots = (
             [self.left_border] * (self.degree + 1)
             + [0] * self.segments_number
@@ -35,8 +33,7 @@ class Spline:
             return -1
 
         while min_id < self.segments_number + self.degree and (
-            self.enlarged_knots[min_id] > point
-            or self.enlarged_knots[min_id + 1] <= point
+            self.enlarged_knots[min_id] > point or self.enlarged_knots[min_id + 1] <= point
         ):
             min_id += 1
         return min_id
@@ -72,13 +69,11 @@ class Spline:
         for j in range(1, self.degree + 1):
             for i in reversed(range(point_index - self.degree + j, point_index + 1)):
                 count_coef = (point - self.enlarged_knots[i]) / (
-                    self.enlarged_knots[i + 1 + self.degree - j]
-                    - self.enlarged_knots[i]
+                    self.enlarged_knots[i + 1 + self.degree - j] - self.enlarged_knots[i]
                 )
                 vector_counter[i - point_index + self.degree] = (
                     count_coef * vector_counter[i - point_index + self.degree]
-                    + (1 - count_coef)
-                    * vector_counter[i - 1 - point_index + self.degree]
+                    + (1 - count_coef) * vector_counter[i - 1 - point_index + self.degree]
                 )
 
         return vector_counter[self.degree]
